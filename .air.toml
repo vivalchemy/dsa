@@ -2,13 +2,13 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-  pre_cmd = ["date"]
-  cmd = "go build -o ./tmp/main . && go test ./striver-a2z-dsa"
+  bin = "/usr/bin/make test"
   delay = 0
   exclude_dir = ["assets", "tmp", "vendor", "testdata"]
   exclude_file = [".gitignore","README.md","go.mod"]
   exclude_unchanged = true
   follow_symlink = false
+  exclude_regex = []
   include_ext = ["go", "tpl", "tmpl", "html"]
   kill_delay = 500
   send_interrupt = true

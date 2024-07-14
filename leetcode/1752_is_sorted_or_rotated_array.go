@@ -1,4 +1,4 @@
-package strivera2zdsa
+package leetcode
 
 func IsSortedOrRotated(nums []int) bool {
 	if len(nums) <= 1 {

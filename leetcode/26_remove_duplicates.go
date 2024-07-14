@@ -1,4 +1,4 @@
-package strivera2zdsa
+package leetcode
 
 func RemoveDuplicates(nums []int) int {
 	if len(nums) == 0 {

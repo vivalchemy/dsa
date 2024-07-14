@@ -156,3 +156,154 @@ func TestRemoveDuplicates(t *testing.T) {
 		})
 	}
 }
+
+func TestRotateArray(t *testing.T) {
+	tests := []struct {
+		nums         []int
+		k            int
+		isRightShift bool
+		expected     []int
+	}{
+		// Right shifts
+		{[]int{1, 2, 3, 4, 5, 6, 7}, 3, true, []int{5, 6, 7, 1, 2, 3, 4}},
+		{[]int{-1, -100, 3, 99}, 2, true, []int{3, 99, -1, -100}},
+		{[]int{1, 2, 3}, 4, true, []int{3, 1, 2}}, // k > len(nums)
+		{[]int{1}, 0, true, []int{1}},             // k = 0
+		{[]int{1, 2}, 2, true, []int{1, 2}},       // k = len(nums)
+
+		// Left shifts
+		{[]int{1, 2, 3, 4, 5, 6, 7}, 3, false, []int{4, 5, 6, 7, 1, 2, 3}},
+		{[]int{-1, -100, 3, 99}, 2, false, []int{3, 99, -1, -100}},
+		{[]int{1, 2, 3}, 4, false, []int{2, 3, 1}}, // k > len(nums)
+		{[]int{1}, 0, false, []int{1}},             // k = 0
+		{[]int{1, 2}, 2, false, []int{1, 2}},       // k = len(nums)
+	}
+
+	for _, test := range tests {
+		numsCopy := make([]int, len(test.nums))
+		copy(numsCopy, test.nums)
+		RotateArray(numsCopy, test.k, test.isRightShift)
+		if !reflect.DeepEqual(numsCopy, test.expected) {
+			t.Errorf("RotateArray(%v, %d, %v) = %v; expected %v", test.nums, test.k, test.isRightShift, numsCopy, test.expected)
+		}
+	}
+}
+
+func TestMoveZeroes(t *testing.T) {
+	tests := []struct {
+		nums     []int
+		expected []int
+	}{
+		{[]int{0, 1, 0, 3, 12}, []int{1, 3, 12, 0, 0}},
+		{[]int{0, 0, 1}, []int{1, 0, 0}},
+		{[]int{0}, []int{0}},
+		{[]int{1, 0}, []int{1, 0}},
+		{[]int{1, 2, 3}, []int{1, 2, 3}},
+		{[]int{0, 0, 0, 0, 1}, []int{1, 0, 0, 0, 0}},
+		{[]int{}, []int{}}, // empty slice
+	}
+
+	for _, test := range tests {
+		numsCopy := make([]int, len(test.nums))
+		copy(numsCopy, test.nums)
+		MoveZeroes(numsCopy)
+		if !reflect.DeepEqual(numsCopy, test.expected) {
+			t.Errorf("MoveZeroes(%v) = %v; expected %v", test.nums, numsCopy, test.expected)
+		}
+	}
+}
+
+func TestLinearSearch(t *testing.T) {
+	tests := []struct {
+		nums     []int
+		target   int
+		expected int
+	}{
+		{[]int{1, 2, 3, 4, 5}, 3, 2},
+		{[]int{1, 2, 3, 4, 5}, 1, 0},
+		{[]int{1, 2, 3, 4, 5}, 5, 4},
+		{[]int{1, 2, 3, 4, 5}, 0, -1},
+		{[]int{5, 4, 3, 2, 1}, 4, 1},
+		{[]int{5, 4, 3, 2, 1}, 6, -1},
+		{[]int{}, 1, -1}, // empty slice
+	}
+
+	for _, test := range tests {
+		result := LinearSearch(test.nums, test.target)
+		if result != test.expected {
+			t.Errorf("LinearSearch(%v, %d) = %d; expected %d", test.nums, test.target, result, test.expected)
+		}
+	}
+}
+
+func TestFindMissingNumber(t *testing.T) {
+	tests := []struct {
+		array    []int
+		expected int
+	}{
+		{[]int{1, 2, 4, 5}, 3},
+		{[]int{1, 2, 3, 4, 5, 6, 7, 9, 10}, 8},
+		{[]int{1, 2, 3, 4, 5}, 6},
+		{[]int{2, 3, 4, 5, 6, 7}, 1},
+		{[]int{2}, 1},
+		{[]int{1}, 2},
+	}
+
+	for _, test := range tests {
+		result := FindMissingNumber(test.array)
+		if result != test.expected {
+			t.Errorf("findMissingNumber(%v) = %d; expected %d", test.array, result, test.expected)
+		}
+	}
+}
+
+func TestLongestSubarrayWithSumKPositive(t *testing.T) {
+	testCases := []struct {
+		arr      []int
+		k        int
+		expected int
+	}{
+		{[]int{2, 3, 5}, 5, 2},
+		{[]int{2, 3, 5, 1, 9}, 10, 3},
+		{[]int{1, 2, 3, 7, 5}, 12, 3},
+		{[]int{1, 2, 3, 4, 5}, 15, 5},
+		{[]int{10, 5, 2, 7, 1, 9}, 15, 4},
+		{[]int{0, 0, 0, 0, 0}, 0, 5},
+		{[]int{0, 0, 0, 0, 5}, 5, 5},
+		{[]int{1, 0, 3, 0, 5}, 4, 4},
+	}
+
+	for _, tc := range testCases {
+		result := LongestSubarrayWithGivenSumKPositive(tc.arr, tc.k)
+		if result != tc.expected {
+			t.Errorf("For input arr = %v, k = %d, expected %d but got %d", tc.arr, tc.k, tc.expected, result)
+		}
+	}
+}
+
+// func TestLongestSubarrayWithSumK(t *testing.T) {
+// 	testCases := []struct {
+// 		N      int
+// 		k      int
+// 		array  []int
+// 		result int
+// 	}{
+// 		{N: 3, k: 5, array: []int{2, 3, 5}, result: 2},
+// 		{N: 3, k: 1, array: []int{-1, 1, 1}, result: 3},
+// 		{N: 5, k: 5, array: []int{1, 2, 3, 4, 5}, result: 2},
+// 		{N: 5, k: 3, array: []int{1, 1, 1, 1, 1}, result: 3},
+// 		{N: 6, k: 0, array: []int{1, -1, 1, -1, 1, -1}, result: 6},
+// 		{N: 4, k: -2, array: []int{-1, -1, 2, 1}, result: 2},
+// 		{N: 7, k: 7, array: []int{1, 2, 3, 4, 5, 6, 7}, result: 2},
+// 		{N: 7, k: 12, array: []int{1, 2, 3, 4, 5, 6, 7}, result: 3},
+// 		{N: 4, k: 10, array: []int{1, 2, 3, -2, 6}, result: 5},
+// 		{N: 3, k: 15, array: []int{10, 5, -10}, result: 2},
+// 	}
+//
+// 	for _, testCase := range testCases {
+// 		output := LongestSubarrayWithGivenSumK(testCase.array, testCase.k)
+// 		if output != testCase.result {
+// 			t.Errorf("Test failed for input array %v with k=%d. Expected %d, got %d", testCase.array, testCase.k, testCase.result, output)
+// 		}
+// 	}
+// }
