@@ -1,6 +1,6 @@
 package strivera2zdsa
 
-func getSingleElement(nums []int) int {
+func GetSingleElement(nums []int) int {
 	var result int
 	for _, value := range nums {
 		result ^= value
