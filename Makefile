@@ -14,35 +14,49 @@ endif
 
 .PHONY: all build clean dev preview test tidy
 
-# Default target
+## help: print this help message (DEFAULT)
+.PHONY: help
+help:
+	@echo -e "Make commands for ${binary_name}\n"
+	@echo 'Usage:'
+	@sed -n 's/^##//p' ${MAKEFILE_LIST} | column -t -s ':' |  sed -e 's/^/ /' | sort
+
+.PHONY: confirm
+confirm:
+	@echo -n 'Are you sure? [y/N] ' && read ans && [ $${ans:-N} = y ]
+
+.PHONY: no-dirty
+no-dirty:
+	@test -z "$(shell git status --porcelain)"
+
 all: preview
 	@echo "Running $@"
 
-# Build target
+## build: Build target
 build: $(BUILD_DIR)/$(APP_NAME)
 	@echo "Running $@"
 
-# Clean target
+## clean: Clean target
 clean:
 	@echo "Running $@"
 	@rm -rf $(TMP_DIR)
 
-# Development target
+## dev: Development target
 dev: $(TMP_DIR)/$(APP_NAME)
 	@echo "Running $@"
 	@$<
 
-# Preview the 1st dependency
+## preview: Preview the 1st dependency
 preview: build
 	@echo "Running $@"
 	@$(BUILD_DIR)/$(APP_NAME)
 
-# Test target
+## test: Test target
 test:
 	@echo "Running $@"
 	@go $@ $(VERBOSE_FLAG) $(TEST_DIR)
 
-# Tidy target
+## tidy: Tidy target
 tidy:
 	@echo "Running $@"
 	@go mod $@
